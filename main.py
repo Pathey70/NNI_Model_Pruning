@@ -36,7 +36,7 @@ parser.add_argument('--mps', action='store_true', default=False,
                         help='enables macOS GPU training')
 parser.add_argument('--dry-run', action='store_true', default=False,
                     help='quickly check a single pass')
-parser.add_argument('--pruner', default='L1NormPruner, metavar='P',
+parser.add_argument('--pruner', default='L1NormPruner', metavar='P',
                     help='type of pruner (default: L1NormPruner)')
 
 class Net(nn.Module):

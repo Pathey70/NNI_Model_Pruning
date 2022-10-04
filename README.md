@@ -12,3 +12,6 @@ Arguments:
 
 pruner_typer - L1NormPruner (default) or L2NormPruner
 
+Structure:
+
+-> main.py file contains model information and pruning method. Pruning steps are present in model_prune() method inside main.py.

@@ -66,7 +66,7 @@ def model_prune(args):
   }]
   if args.pruner == 'L1NormPruner':
     pruner = L1NormPruner(model, config_list)
-   else:
+  else:
     pruner = L2NormPruner(model, config_list)
   print(model)
   _, masks = pruner.compress()

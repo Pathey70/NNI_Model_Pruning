@@ -36,6 +36,8 @@ parser.add_argument('--mps', action='store_true', default=False,
                         help='enables macOS GPU training')
 parser.add_argument('--dry-run', action='store_true', default=False,
                     help='quickly check a single pass')
+parser.add_argument('--pruner', default='L1NormPruner, metavar='P',
+                    help='type of pruner (default: L1NormPruner)')
 
 class Net(nn.Module):
     def __init__(self):
@@ -54,7 +56,7 @@ class Net(nn.Module):
         x = self.fc2(x)
         return F.log_softmax(x, dim=1)
 
-def model_prune():
+def model_prune(args):
   config_list = [{
     'sparsity_per_layer': 0.5,
     'op_types': ['Linear']
@@ -62,7 +64,10 @@ def model_prune():
     'exclude': True,
     'op_names': ['fc2']
   }]
-  pruner = L2NormPruner(model, config_list)
+  if args.pruner == 'L1NormPruner':
+    pruner = L1NormPruner(model, config_list)
+   else:
+    pruner = L2NormPruner(model, config_list)
   print(model)
   _, masks = pruner.compress()
   for name, mask in masks.items():
@@ -135,4 +140,4 @@ if __name__ == '__main__':
     test(args, model, device, dataset2, kwargs)
     end_time_before_pruning = time.time()
     print("\n","Model execution time before pruning",str(end_time_before_pruning - start_time_before_pruning))
-    model_prune()
+    model_prune(args)
